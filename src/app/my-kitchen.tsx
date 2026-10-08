@@ -7,10 +7,6 @@ import {
   TouchableOpacity,
   Animated,
   PanResponder,
-  GestureResponderEvent,
-  PanResponderGestureState,
-  Modal,
-  Platform,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -67,8 +63,15 @@ function SwipeableRecipeCard({
   const translateX = swipeAnim;
 
   return (
-    <View style={styles.swipeableContainer}>
-      <View style={styles.swipeBackground}>
+    <View
+      style={styles.swipeableContainer}
+      accessible={true}
+      accessibilityHint="Swipe left to delete this recipe"
+    >
+      <View
+        style={styles.swipeBackground}
+        accessible={false}
+      >
         <Text style={styles.deleteLabel}>Delete</Text>
       </View>
       <Animated.View
@@ -134,8 +137,18 @@ export default function MyKitchenScreen() {
       </View>
 
       {savedRecipesList.length === 0 ? (
-        <View style={styles.emptyState}>
-          <Text style={styles.emptyIcon}>🍳</Text>
+        <View
+          style={styles.emptyState}
+          accessible={true}
+          accessibilityRole="text"
+          accessibilityLabel="No saved recipes yet. Tap the pot icon on recipe cards to save them here"
+        >
+          <Text
+            style={styles.emptyIcon}
+            accessibilityLabel="Cooking pot icon"
+          >
+            🍳
+          </Text>
           <Text style={styles.emptyTitle}>No saved recipes yet</Text>
           <Text style={styles.emptyDescription}>
             Tap the pot icon on recipe cards to save them here
@@ -163,9 +176,20 @@ export default function MyKitchenScreen() {
       )}
 
       {undoVisible && undoStack.length > 0 && (
-        <View style={styles.undoSnackbar}>
+        <View
+          style={styles.undoSnackbar}
+          accessible={true}
+          accessibilityRole="alert"
+          accessibilityLabel="Recipe deleted"
+        >
           <Text style={styles.undoText}>Recipe deleted</Text>
-          <TouchableOpacity onPress={handleUndo}>
+          <TouchableOpacity
+            onPress={handleUndo}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="Undo delete"
+            accessibilityHint="Double tap to restore the deleted recipe"
+          >
             <Text style={styles.undoButton}>UNDO</Text>
           </TouchableOpacity>
         </View>

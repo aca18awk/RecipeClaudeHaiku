@@ -6,9 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-  Alert,
   Modal,
-  Platform,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -124,16 +122,30 @@ export default function AddRecipeScreen() {
           <TouchableOpacity
             style={styles.closeButton}
             onPress={() => router.back()}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel="Close"
+            accessibilityHint="Double tap to close without saving"
           >
             <Text style={styles.closeIcon}>✕</Text>
           </TouchableOpacity>
-          <Text style={styles.title}>Add New Recipe</Text>
+          <Text
+            style={styles.title}
+            accessibilityRole="header"
+          >
+            Add New Recipe
+          </Text>
           <View style={{ width: 40 }} />
         </View>
 
         <View style={styles.content}>
           <View style={styles.section}>
-            <Text style={styles.label}>Recipe Title *</Text>
+            <Text
+              style={styles.label}
+              accessibilityRole="header"
+            >
+              Recipe Title *
+            </Text>
             <TextInput
               style={[
                 styles.input,
@@ -143,12 +155,20 @@ export default function AddRecipeScreen() {
               value={title}
               onChangeText={setTitle}
               placeholderTextColor="#9ca3af"
+              accessibilityLabel="Recipe Title"
+              accessibilityHint={errors.title ? `Error: ${errors.title}` : "Enter the name of your recipe"}
+              accessible={true}
             />
             {renderError('title')}
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.label}>Cooking Time (minutes) *</Text>
+            <Text
+              style={styles.label}
+              accessibilityRole="header"
+            >
+              Cooking Time (minutes) *
+            </Text>
             <TextInput
               style={[
                 styles.input,
@@ -159,12 +179,20 @@ export default function AddRecipeScreen() {
               onChangeText={setCookingTime}
               keyboardType="number-pad"
               placeholderTextColor="#9ca3af"
+              accessibilityLabel="Cooking Time"
+              accessibilityHint={errors.cookingTime ? `Error: ${errors.cookingTime}` : "Enter cooking time in minutes"}
+              accessible={true}
             />
             {renderError('cookingTime')}
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.label}>Servings *</Text>
+            <Text
+              style={styles.label}
+              accessibilityRole="header"
+            >
+              Servings *
+            </Text>
             <TextInput
               style={[
                 styles.input,
@@ -175,12 +203,20 @@ export default function AddRecipeScreen() {
               onChangeText={setServings}
               keyboardType="number-pad"
               placeholderTextColor="#9ca3af"
+              accessibilityLabel="Servings"
+              accessibilityHint={errors.servings ? `Error: ${errors.servings}` : "Enter number of servings"}
+              accessible={true}
             />
             {renderError('servings')}
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.label}>Source URL (optional)</Text>
+            <Text
+              style={styles.label}
+              accessibilityRole="header"
+            >
+              Source URL (optional)
+            </Text>
             <TextInput
               style={styles.input}
               placeholder="https://example.com/recipe"
@@ -188,25 +224,36 @@ export default function AddRecipeScreen() {
               onChangeText={setSourceUrl}
               keyboardType="url"
               placeholderTextColor="#9ca3af"
+              accessibilityLabel="Source URL"
+              accessibilityHint="Enter the URL where this recipe comes from"
+              accessible={true}
             />
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.label}>Ingredients *</Text>
+            <Text
+              style={styles.label}
+              accessibilityRole="header"
+            >
+              Ingredients *
+            </Text>
             <Text style={styles.helperText}>
-              Enter one ingredient per line. Format: "2 tbsp olive oil" or just "salt"
+              Enter one ingredient per line. Format: &#34;2 tbsp olive oil&#34; or just &#34;salt&#34;
             </Text>
             <TextInput
               style={[
                 styles.textArea,
                 errors.ingredients && styles.inputError,
               ]}
-              placeholder="2 tbsp olive oil&#10;200g flour&#10;1 tsp salt"
+              placeholder={"2 tbsp olive oil\n200g flour\n1 tsp salt"}
               value={ingredients}
               onChangeText={setIngredients}
               multiline
               numberOfLines={6}
               placeholderTextColor="#9ca3af"
+              accessibilityLabel="Ingredients"
+              accessibilityHint={errors.ingredients ? `Error: ${errors.ingredients}` : "Enter ingredients, one per line. You can include quantities."}
+              accessible={true}
             />
             {renderError('ingredients')}
           </View>
@@ -215,18 +262,31 @@ export default function AddRecipeScreen() {
             <TouchableOpacity
               style={styles.secondaryButton}
               onPress={() => router.back()}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="Cancel"
+              accessibilityHint="Double tap to discard changes and go back"
             >
               <Text style={styles.secondaryButtonText}>Cancel</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.primaryButton}
               onPress={handleAddRecipe}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="Add Recipe"
+              accessibilityHint="Double tap to save and add this recipe"
             >
               <Text style={styles.primaryButtonText}>Add Recipe</Text>
             </TouchableOpacity>
           </View>
 
-          <Text style={styles.requiredNote}>* = Required field</Text>
+          <Text
+            style={styles.requiredNote}
+            accessibilityRole="text"
+          >
+            * = Required field
+          </Text>
         </View>
       </ScrollView>
 
@@ -234,10 +294,21 @@ export default function AddRecipeScreen() {
         visible={toastVisible}
         transparent
         pointerEvents="none"
+        accessibilityViewIsModal={toastVisible}
       >
-        <View style={styles.toastContainer}>
+        <View
+          style={styles.toastContainer}
+          accessible={true}
+          accessibilityRole="alert"
+          accessibilityLabel={toastMessage}
+        >
           <View style={styles.toast}>
-            <Text style={styles.toastText}>{toastMessage}</Text>
+            <Text
+              style={styles.toastText}
+              accessibilityLiveRegion="assertive"
+            >
+              {toastMessage}
+            </Text>
           </View>
         </View>
       </Modal>

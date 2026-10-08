@@ -51,22 +51,43 @@ export function FilterSheet({
       transparent
       animationType="slide"
       onRequestClose={onClose}
+      accessibilityViewIsModal={true}
     >
       <TouchableOpacity
         style={styles.overlay}
         activeOpacity={1}
         onPress={onClose}
+        accessible={false}
       >
-        <View style={styles.sheet}>
+        <View
+          style={styles.sheet}
+          accessible={true}
+        >
           <View style={styles.header}>
-            <Text style={styles.title}>Filter Recipes</Text>
-            <TouchableOpacity onPress={onClose}>
+            <Text
+              style={styles.title}
+              accessibilityRole="header"
+            >
+              Filter Recipes
+            </Text>
+            <TouchableOpacity
+              onPress={onClose}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="Close filter dialog"
+              accessibilityHint="Double tap to close the filter menu"
+            >
               <Text style={styles.closeButton}>✕</Text>
             </TouchableOpacity>
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Dietary</Text>
+            <Text
+              style={styles.sectionTitle}
+              accessibilityRole="header"
+            >
+              Dietary
+            </Text>
             <View style={styles.chipGroup}>
               <TouchableOpacity
                 style={[
@@ -74,6 +95,11 @@ export function FilterSheet({
                   filters.vegetarian && styles.chipActive,
                 ]}
                 onPress={handleToggleVegetarian}
+                accessible={true}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: filters.vegetarian }}
+                accessibilityLabel="Vegetarian"
+                accessibilityHint="Double tap to toggle vegetarian filter"
               >
                 <Text
                   style={[
@@ -88,7 +114,12 @@ export function FilterSheet({
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Time</Text>
+            <Text
+              style={styles.sectionTitle}
+              accessibilityRole="header"
+            >
+              Time
+            </Text>
             <View style={styles.chipGroup}>
               <TouchableOpacity
                 style={[
@@ -96,6 +127,11 @@ export function FilterSheet({
                   filters.under30Min && styles.chipActive,
                 ]}
                 onPress={handleToggleUnder30}
+                accessible={true}
+                accessibilityRole="checkbox"
+                accessibilityState={{ checked: filters.under30Min }}
+                accessibilityLabel="Under 30 minutes"
+                accessibilityHint="Double tap to toggle under 30 minutes filter"
               >
                 <Text
                   style={[
@@ -110,7 +146,12 @@ export function FilterSheet({
           </View>
 
           <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Difficulty</Text>
+            <Text
+              style={styles.sectionTitle}
+              accessibilityRole="header"
+            >
+              Difficulty
+            </Text>
             <View style={styles.chipGroup}>
               {(['easy', 'medium', 'hard'] as const).map(level => (
                 <TouchableOpacity
@@ -120,6 +161,11 @@ export function FilterSheet({
                     filters.difficulty === level && styles.chipActive,
                   ]}
                   onPress={() => handleDifficultyChange(level)}
+                  accessible={true}
+                  accessibilityRole="radio"
+                  accessibilityState={{ selected: filters.difficulty === level }}
+                  accessibilityLabel={`${level.charAt(0).toUpperCase() + level.slice(1)} difficulty`}
+                  accessibilityHint="Double tap to select this difficulty level"
                 >
                   <Text
                     style={[
@@ -138,12 +184,20 @@ export function FilterSheet({
             <TouchableOpacity
               style={styles.resetButton}
               onPress={handleReset}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="Reset Filters"
+              accessibilityHint="Double tap to clear all active filters"
             >
               <Text style={styles.resetButtonText}>Reset Filters</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={styles.doneButton}
               onPress={onClose}
+              accessible={true}
+              accessibilityRole="button"
+              accessibilityLabel="Done"
+              accessibilityHint="Double tap to close the filter menu and apply changes"
             >
               <Text style={styles.doneButtonText}>Done</Text>
             </TouchableOpacity>

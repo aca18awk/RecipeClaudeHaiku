@@ -5,8 +5,6 @@ import {
   Text,
   TouchableOpacity,
   Alert,
-  Modal,
-  Platform,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
@@ -64,7 +62,12 @@ export default function CookingModeScreen() {
   if (!recipe) {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.errorContainer}>
+        <View
+          style={styles.errorContainer}
+          accessible={true}
+          accessibilityRole="text"
+          accessibilityLabel="Recipe not found"
+        >
           <Text style={styles.errorText}>Recipe not found</Text>
         </View>
       </SafeAreaView>
@@ -114,11 +117,25 @@ export default function CookingModeScreen() {
         <TouchableOpacity
           style={styles.backButton}
           onPress={() => router.back()}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel="Back"
+          accessibilityHint="Double tap to exit cooking mode"
         >
           <Text style={styles.backIcon}>‹</Text>
         </TouchableOpacity>
-        <Text style={styles.title}>{recipe.title}</Text>
-        <View style={styles.stepCounter}>
+        <Text
+          style={styles.title}
+          accessibilityRole="header"
+        >
+          {recipe.title}
+        </Text>
+        <View
+          style={styles.stepCounter}
+          accessible={true}
+          accessibilityRole="text"
+          accessibilityLabel={`Step ${currentStep + 1} of ${recipe.steps.length}`}
+        >
           <Text style={styles.stepCounterText}>
             {currentStep + 1} / {recipe.steps.length}
           </Text>
@@ -126,7 +143,17 @@ export default function CookingModeScreen() {
       </View>
 
       <View style={styles.content}>
-        <View style={styles.progressBar}>
+        <View
+          style={styles.progressBar}
+          accessible={true}
+          accessibilityRole="progressbar"
+          accessibilityValue={{
+            min: 0,
+            max: recipe.steps.length,
+            now: currentStep + 1,
+          }}
+          accessibilityLabel="Cooking progress"
+        >
           <View
             style={[
               styles.progressFill,
@@ -134,17 +161,35 @@ export default function CookingModeScreen() {
                 width: `${((currentStep + 1) / recipe.steps.length) * 100}%`,
               },
             ]}
+            accessible={false}
           />
         </View>
 
-        <View style={styles.stepContainer}>
+        <View
+          style={styles.stepContainer}
+          accessible={true}
+          accessibilityRole="text"
+          accessibilityLabel={`Step ${currentStep + 1}: ${step?.text}`}
+        >
           <Text style={styles.stepText}>{step?.text}</Text>
         </View>
 
         {step?.timerSeconds && (
-          <View style={styles.timerSection}>
-            <View style={styles.timerDisplay}>
-              <Text style={styles.timerText}>
+          <View
+            style={styles.timerSection}
+            accessible={true}
+            accessibilityRole="timer"
+          >
+            <View
+              style={styles.timerDisplay}
+              accessible={true}
+              accessibilityRole="text"
+              accessibilityLabel={`Timer: ${formatTime(timeRemaining || 0)} remaining`}
+            >
+              <Text
+                style={styles.timerText}
+                accessible={false}
+              >
                 {formatTime(timeRemaining || 0)}
               </Text>
             </View>
@@ -154,22 +199,49 @@ export default function CookingModeScreen() {
                 <TouchableOpacity
                   style={styles.timerButton}
                   onPress={handleStartTimer}
+                  accessible={true}
+                  accessibilityRole="button"
+                  accessibilityLabel="Start timer"
+                  accessibilityHint="Double tap to start the timer"
                 >
-                  <Text style={styles.timerButtonText}>Start</Text>
+                  <Text
+                    style={styles.timerButtonText}
+                    accessible={false}
+                  >
+                    Start
+                  </Text>
                 </TouchableOpacity>
               ) : (
                 <TouchableOpacity
                   style={styles.timerButton}
                   onPress={handlePauseTimer}
+                  accessible={true}
+                  accessibilityRole="button"
+                  accessibilityLabel="Pause timer"
+                  accessibilityHint="Double tap to pause the timer"
                 >
-                  <Text style={styles.timerButtonText}>Pause</Text>
+                  <Text
+                    style={styles.timerButtonText}
+                    accessible={false}
+                  >
+                    Pause
+                  </Text>
                 </TouchableOpacity>
               )}
               <TouchableOpacity
                 style={styles.timerButtonSecondary}
                 onPress={handleResetTimer}
+                accessible={true}
+                accessibilityRole="button"
+                accessibilityLabel="Reset timer"
+                accessibilityHint="Double tap to reset the timer to its initial value"
               >
-                <Text style={styles.timerButtonSecondaryText}>Reset</Text>
+                <Text
+                  style={styles.timerButtonSecondaryText}
+                  accessible={false}
+                >
+                  Reset
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
@@ -181,15 +253,32 @@ export default function CookingModeScreen() {
           style={[styles.navButton, isFirstStep && styles.navButtonDisabled]}
           onPress={handlePreviousStep}
           disabled={isFirstStep}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel="Previous step"
+          accessibilityHint={isFirstStep ? "You are on the first step" : "Double tap to go to the previous step"}
+          accessibilityState={{ disabled: isFirstStep }}
         >
-          <Text style={styles.navButtonText}>← Previous</Text>
+          <Text
+            style={styles.navButtonText}
+            accessible={false}
+          >
+            ← Previous
+          </Text>
         </TouchableOpacity>
 
         <TouchableOpacity
           style={styles.navButton}
           onPress={handleNextStep}
+          accessible={true}
+          accessibilityRole="button"
+          accessibilityLabel={isLastStep ? "Finish cooking" : "Next step"}
+          accessibilityHint={isLastStep ? "Double tap to finish cooking and exit" : "Double tap to go to the next step"}
         >
-          <Text style={styles.navButtonText}>
+          <Text
+            style={styles.navButtonText}
+            accessible={false}
+          >
             {isLastStep ? 'Finish' : 'Next →'}
           </Text>
         </TouchableOpacity>

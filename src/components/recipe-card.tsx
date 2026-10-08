@@ -50,11 +50,16 @@ export function RecipeCard({ recipe, onPress }: RecipeCardProps) {
       style={styles.container}
       onPress={onPress}
       activeOpacity={0.7}
+      accessible={true}
+      accessibilityRole="button"
+      accessibilityLabel={`${recipe.title} recipe`}
+      accessibilityHint={`${recipe.cookingTimeMinutes} minutes, ${recipe.difficulty} difficulty. Double tap to view details.`}
     >
       <Image
         source={getImageSource(recipe.image)}
         style={styles.image}
         resizeMode="cover"
+        accessibilityLabel={`${recipe.title} dish image`}
       />
 
       <View style={styles.content}>
@@ -63,13 +68,21 @@ export function RecipeCard({ recipe, onPress }: RecipeCardProps) {
         </Text>
 
         <View style={styles.footer}>
-          <View style={styles.meta}>
+          <View
+            style={styles.meta}
+            accessible={true}
+            accessibilityRole="text"
+            accessibilityLabel={`${recipe.cookingTimeMinutes} minutes, ${recipe.difficulty} difficulty`}
+          >
             <Text style={styles.time}>⏱ {recipe.cookingTimeMinutes} min</Text>
             <View
               style={[
                 styles.difficulty,
                 { backgroundColor: difficultyColors[recipe.difficulty] },
               ]}
+              accessible={true}
+              accessibilityLabel={`Difficulty: ${recipe.difficulty}`}
+              accessibilityRole="text"
             >
               <Text style={styles.difficultyText}>
                 {recipe.difficulty.charAt(0).toUpperCase() +
@@ -85,6 +98,11 @@ export function RecipeCard({ recipe, onPress }: RecipeCardProps) {
                 isSaved && styles.saveButtonActive,
               ]}
               onPress={handleSavePress}
+              accessible={true}
+              accessibilityRole="checkbox"
+              accessibilityState={{ checked: isSaved }}
+              accessibilityLabel={`Save ${recipe.title} to my kitchen`}
+              accessibilityHint={isSaved ? "Saved to your kitchen. Double tap to remove." : "Double tap to save to your kitchen."}
             >
               <Text style={styles.saveIcon}>{isSaved ? '🍳' : '🍳'}</Text>
             </TouchableOpacity>

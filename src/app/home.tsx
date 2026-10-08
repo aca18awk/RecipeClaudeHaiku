@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
   Text,
   Image,
-  Platform,
 } from 'react-native';
 import { SafeAreaView, useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -77,8 +76,15 @@ export default function HomeScreen() {
                 value={searchQuery}
                 onChangeText={setSearchQuery}
                 placeholderTextColor="#9ca3af"
+                accessibilityLabel="Search recipes"
+                accessibilityHint="Type to search by recipe name or ingredients"
               />
-              <Text style={styles.searchIcon}>🔍</Text>
+              <Text
+                style={styles.searchIcon}
+                accessibilityLabel="Search icon"
+              >
+                🔍
+              </Text>
             </View>
 
             <TouchableOpacity
@@ -87,27 +93,52 @@ export default function HomeScreen() {
                 hasActiveFilters && styles.filterButtonActive,
               ]}
               onPress={() => setFilterSheetVisible(true)}
+              accessibilityLabel="Open filters"
+              accessibilityHint={hasActiveFilters ? "Filters currently applied. Double tap to modify filters." : "Double tap to open filter options"}
+              accessibilityRole="button"
+              accessible={true}
             >
               <Text style={styles.filterIcon}>⚙</Text>
             </TouchableOpacity>
           </View>
 
           {hasActiveFilters && (
-            <View style={styles.activeFilters}>
+            <View
+              style={styles.activeFilters}
+              accessible={true}
+              accessibilityRole="text"
+              accessibilityLabel={`Filters applied: ${[
+                filters.vegetarian && 'Vegetarian',
+                filters.under30Min && 'Under 30 minutes',
+                filters.difficulty && filters.difficulty
+              ].filter(Boolean).join(', ')}`}
+            >
               <Text style={styles.filterLabel}>Filters applied:</Text>
-              <View style={styles.filterTags}>
+              <View style={styles.filterTags} accessible={false}>
                 {filters.vegetarian && (
-                  <View style={styles.filterTag}>
+                  <View
+                    style={styles.filterTag}
+                    accessible={true}
+                    accessibilityLabel="Vegetarian filter"
+                  >
                     <Text style={styles.filterTagText}>🌱</Text>
                   </View>
                 )}
                 {filters.under30Min && (
-                  <View style={styles.filterTag}>
+                  <View
+                    style={styles.filterTag}
+                    accessible={true}
+                    accessibilityLabel="Under 30 minutes filter"
+                  >
                     <Text style={styles.filterTagText}>⏱</Text>
                   </View>
                 )}
                 {filters.difficulty && (
-                  <View style={styles.filterTag}>
+                  <View
+                    style={styles.filterTag}
+                    accessible={true}
+                    accessibilityLabel={`${filters.difficulty} difficulty filter`}
+                  >
                     <Text style={styles.filterTagText}>
                       {filters.difficulty}
                     </Text>
@@ -119,11 +150,17 @@ export default function HomeScreen() {
         </View>
 
         {filteredRecipes.length === 0 ? (
-          <View style={styles.emptyState}>
+          <View
+            style={styles.emptyState}
+            accessible={true}
+            accessibilityRole="text"
+            accessibilityLabel="No recipes found. Try adjusting your filters or search query"
+          >
             <Image
               source={getImageSource('assets/images/empty-state.jpeg')}
               style={styles.emptyImage}
               resizeMode="contain"
+              accessibilityLabel="Empty state illustration"
             />
             <Text style={styles.emptyTitle}>No recipes found</Text>
             <Text style={styles.emptyDescription}>

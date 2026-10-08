@@ -48,8 +48,15 @@ export default function RootLayout() {
             title: 'Home',
             tabBarLabel: 'Home',
             tabBarIcon: ({ color }) => (
-              <Text style={{ fontSize: 24 }}>🏠</Text>
+              <Text
+                style={{ fontSize: 24 }}
+                accessibilityLabel="Home"
+                accessibilityRole="imagebutton"
+              >
+                🏠
+              </Text>
             ),
+            tabBarAccessibilityLabel: 'Home tab',
           }}
         />
         <Tabs.Screen
@@ -58,8 +65,15 @@ export default function RootLayout() {
             title: 'My Kitchen',
             tabBarLabel: 'Kitchen',
             tabBarIcon: ({ color }) => (
-              <Text style={{ fontSize: 24 }}>🍳</Text>
+              <Text
+                style={{ fontSize: 24 }}
+                accessibilityLabel="My Kitchen"
+                accessibilityRole="imagebutton"
+              >
+                🍳
+              </Text>
             ),
+            tabBarAccessibilityLabel: 'My Kitchen tab',
           }}
         />
         <Tabs.Screen
@@ -68,8 +82,15 @@ export default function RootLayout() {
             title: 'Add Recipe',
             tabBarLabel: 'Add',
             tabBarIcon: ({ color }) => (
-              <Text style={{ fontSize: 24 }}>➕</Text>
+              <Text
+                style={{ fontSize: 24 }}
+                accessibilityLabel="Add Recipe"
+                accessibilityRole="imagebutton"
+              >
+                ➕
+              </Text>
             ),
+            tabBarAccessibilityLabel: 'Add Recipe tab',
           }}
         />
       </Tabs>

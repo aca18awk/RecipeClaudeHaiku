@@ -32,8 +32,17 @@ export function FeaturedCarousel({ recipes, onPress }: FeaturedCarouselProps) {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Featured Recipes</Text>
+    <View
+      style={styles.container}
+      accessible={true}
+      accessibilityRole="list"
+    >
+      <Text
+        style={styles.title}
+        accessibilityRole="header"
+      >
+        Featured Recipes
+      </Text>
 
       <ScrollView
         ref={scrollViewRef}
@@ -45,18 +54,25 @@ export function FeaturedCarousel({ recipes, onPress }: FeaturedCarouselProps) {
         scrollEventThrottle={16}
         style={styles.scroll}
         contentContainerStyle={styles.scrollContent}
+        accessibilityLabel="Featured recipes carousel"
+        accessibilityHint={`Showing ${recipes.length} featured recipes. Scroll horizontally to browse.`}
       >
-        {recipes.map(recipe => (
+        {recipes.map((recipe, index) => (
           <TouchableOpacity
             key={recipe.id}
             style={styles.card}
             onPress={() => onPress(recipe)}
             activeOpacity={0.8}
+            accessible={true}
+            accessibilityRole="button"
+            accessibilityLabel={`${recipe.title}. Featured recipe ${index + 1} of ${recipes.length}.`}
+            accessibilityHint={recipe.description}
           >
             <Image
               source={getImageSource(recipe.image)}
               style={styles.image}
               resizeMode="cover"
+              accessibilityLabel={`${recipe.title} featured dish`}
             />
             <View style={styles.cardContent}>
               <Text style={styles.cardTitle} numberOfLines={2}>
@@ -70,7 +86,12 @@ export function FeaturedCarousel({ recipes, onPress }: FeaturedCarouselProps) {
         ))}
       </ScrollView>
 
-      <View style={styles.dots}>
+      <View
+        style={styles.dots}
+        accessible={true}
+        accessibilityRole="text"
+        accessibilityLabel={`Showing featured recipe ${activeIndex + 1} of ${recipes.length}`}
+      >
         {recipes.map((_, index) => (
           <View
             key={index}
@@ -78,6 +99,8 @@ export function FeaturedCarousel({ recipes, onPress }: FeaturedCarouselProps) {
               styles.dot,
               activeIndex === index && styles.dotActive,
             ]}
+            accessible={index === activeIndex}
+            accessibilityLabel={index === activeIndex ? `Current slide: recipe ${index + 1}` : undefined}
           />
         ))}
       </View>
